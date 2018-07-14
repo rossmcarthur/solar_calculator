@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
+import SolarMap from './map';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1> Hey!</h1>
+        <SolarMap />
       </div>
     );
   }
