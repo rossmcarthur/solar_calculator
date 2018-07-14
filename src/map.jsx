@@ -1,12 +1,13 @@
 import React from 'react';
-import Map from 'ol/Map';
-import View from 'ol/View';
-import TileLayer from 'ol/layer/Tile';
-import OSM from 'ol/source/OSM';
-import { fromLonLat } from 'ol/proj';
-import Draw from 'ol/interaction/Draw';
-import {Vector as VectorLayer} from 'ol/layer.js';
-import {Vector as VectorSource} from 'ol/source.js';
+import Geocoder from 'ol-geocoder';
+import Map from 'ol/map';
+import View from 'ol/view';
+import TileLayer from 'ol/layer/tile';
+import OSM from 'ol/source/osm';
+import Draw from 'ol/interaction/draw';
+import VectorLayer from 'ol/layer/vector';
+import VectorSource from 'ol/source/vector';
+import fromLonLat from 'ol/proj';
 
 class SolarMap extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class SolarMap extends React.Component {
   }
 
   componentDidMount() {
-    const bostonCoords = [-71.05, 42.36];
+    const bostonCoords = fromLonLat.fromLonLat([-71.05, 42.36]);
     const raster = new TileLayer({
       source: new OSM()
     });
@@ -29,6 +30,11 @@ class SolarMap extends React.Component {
       source: source,
       type: "Polygon"
     });
+    const geocoder = new Geocoder('nominatim', {
+      autoComplete: true,
+      placeholder: 'Search for an address',
+      countrycodes: 'us'
+    });
     const mapShow = new Map({
       target: 'map',
       layers: [
@@ -36,18 +42,21 @@ class SolarMap extends React.Component {
         vector
       ],
       view: new View({
-        center: fromLonLat(bostonCoords),
-        zoom: 11
+        center: bostonCoords,
+        zoom: 11,
       }),
     });
 
     mapShow.addInteraction(draw);
+    mapShow.addControl(geocoder);
     this.setState({ map: mapShow });
   }
-  render() {
 
+  render() {
     return(
-      <div id='map' className="map"></div>
+      <div>
+        <div id='map' className="map"></div>
+      </div>
     );
   }
 }
