@@ -2,3 +2,14 @@
   height: 400px;
   width: 100%;
 }
+
+#gcd-button-control {
+  top: .825em;
+  background: url('./search.png');
+  background-size: cover;
+}
+
+#gcd-input-reset {
+  position: relative;
+  right: -3.45em;
+}

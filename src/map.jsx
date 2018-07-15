@@ -7,7 +7,8 @@ import OSM from 'ol/source/osm';
 import Draw from 'ol/interaction/draw';
 import VectorLayer from 'ol/layer/vector';
 import VectorSource from 'ol/source/vector';
-import fromLonLat from 'ol/proj';
+import Coords from 'ol/proj';
+import Style from 'ol/style';
 
 class SolarMap extends React.Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class SolarMap extends React.Component {
   }
 
   componentDidMount() {
-    const bostonCoords = fromLonLat.fromLonLat([-71.05, 42.36]);
+    const bostonCoords = Coords.fromLonLat([-71.05, 42.36]);
     const raster = new TileLayer({
       source: new OSM()
     });
@@ -33,7 +34,9 @@ class SolarMap extends React.Component {
     const geocoder = new Geocoder('nominatim', {
       autoComplete: true,
       placeholder: 'Search for an address',
-      countrycodes: 'us'
+      countrycodes: 'us',
+      featureStyle : Style.style,
+      keepOpen: false
     });
     const mapShow = new Map({
       target: 'map',
